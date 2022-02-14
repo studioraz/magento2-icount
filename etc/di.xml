@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © 2022 Studio Raz. All rights reserved.
+  ~ See LICENCE file for license details.
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<!-- ========== start Preferences ========== -->
+    <preference for="SR\Icount\Api\Data\IcountDocInterface" type="SR\Icount\Model\Data\IcountDocData"/>
+    <preference for="SR\Icount\Api\Data\IcountDocSearchResultsInterface" type="SR\Icount\Model\Data\IcountDocSearchResults" />
+    <preference for="SR\Icount\Api\IcountDocRepositoryInterface" type="SR\Icount\Model\ResourceModel\IcountDocRepository" />
+<!-- ========== end Preferences ========== -->
+
+    <virtualType name="SrIcountConfig" type="SR\Icount\Gateway\Config\Config" />
+
+
+<!-- start: Extension Activity STATE -->
+    <type name="SR\Icount\Gateway\ModuleState">
+        <arguments>
+            <!--
+                NOTE: use such approach to force Enable/Disable the module
+                @see \SR\Gateway\Model\ModuleState::isActive
+            -->
+            <argument name="config" xsi:type="object">SrIcountConfig</argument>
+            <!--<argument name="forceActive" xsi:type="boolean">true</argument>-->
+        </arguments>
+    </type>
+<!-- end: Extension Activity STATE -->
+
+
+<!-- ========== start: Plugin definitions ========== -->
+<!-- ========== end: Plugin definitions ========== -->
+
+
+
+<!-- ========== start Console Commands definitions ========== -->
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="sricount_doc_invoice_create" xsi:type="object">SR\Icount\Console\Command\Doc\CreateInvoiceCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="SR\Icount\Console\Command\Doc\CreateInvoiceCommand">
+        <arguments>
+            <argument name="moduleState" xsi:type="object">SR\Icount\Gateway\ModuleState</argument>
+            <argument name="name" xsi:type="string">sricount:doc-invoice:create</argument>
+        </arguments>
+    </type>
+<!-- ========== end Console Commands definitions ========== -->
+
+
+<!-- start: CRON Jobs definitions -->
+    <type name="SR\Icount\Cron\Doc\CreateInvoiceTask">
+        <arguments>
+            <argument name="config" xsi:type="object">SrIcountConfig</argument>
+            <argument name="logger" xsi:type="object">SrIcountMainLogger</argument>
+            <argument name="moduleState" xsi:type="object">SR\Icount\Gateway\ModuleState</argument>
+        </arguments>
+    </type>
+<!-- end: CRON Jobs definitions -->
+
+
+<!-- ========== start Service definitions ========== -->
+    <type name="SR\Icount\Service\Doc\CreateDocInvoiceService">
+        <arguments>
+            <argument name="config" xsi:type="object">SrIcountConfig</argument>
+            <argument name="logger" xsi:type="object">SrIcountMainLogger</argument>
+            <argument name="errorAggregator" xsi:type="object">SR\Icount\Service\ImportExport\ErrorProcessing\ProcessingErrorAggregator</argument>
+        </arguments>
+    </type>
+<!-- ========== end Service definitions ========== -->
+
+
+
+<!--
+/**
+ * ========== START: GATEWAY DEFINITIONS ans CONFIGURATION ==========
+ */
+-->
+    <!-- start: Gateway Adapter configuration -->
+    <!--
+        NOTE: the GatewayAdapterPool is used in GatewayAdapterFactory
+        @see \SR\Gateway\Model\GatewayAdapterFactory
+    -->
+    <type name="SR\Gateway\Model\GatewayAdapterPool">
+        <arguments>
+            <argument name="classNames" xsi:type="array">
+                <!-- \SR\Icount\Gateway\Config\Config::EXT_ALIAS -->
+                <item name="sricount" xsi:type="string">SR\Icount\Gateway\GatewayAdapter</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="SR\Icount\Gateway\GatewayAdapter">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">SrIcountCommandPool</argument>
+            <argument name="config" xsi:type="object">SrIcountConfig</argument>
+        </arguments>
+    </type>
+    <!-- end: Gateway Adapter configuration -->
+
+
+    <!-- start: Commands infrastructure -->
+    <virtualType name="SrIcountCommandPool" type="SrGatewayCommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="create_invoice" xsi:type="string">SrIcountCreateInvoiceCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="AbstractSrIcountCommand" type="AbstractSrGatewayCommand">
+        <arguments>
+            <argument name="transferFactory" xsi:type="object">SR\Icount\Gateway\Http\TransferFactory</argument>
+            <argument name="clientFactory" xsi:type="object">SrIcountClientFactory</argument>
+            <argument name="handler" xsi:type="object">AbstractSrIcountHandlerChain</argument>
+            <argument name="errorMessageMapper" xsi:type="object">SrActiveTrailErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="AbstractSrIcountRequestBuilder" type="AbstractSrGatewayRequestBuilder">
+        <arguments>
+            <argument name="config" xsi:type="object">SrIcountConfig</argument>
+            <argument name="builders" xsi:type="array">
+                <item name="api_credentials" xsi:type="string">SR\Icount\Gateway\Request\ApiCredentialsBuilder</item>
+                <item name="request_method" xsi:type="string">SR\Gateway\Model\Request\RequestMethod\PostRequestMethodBuilder</item>
+                <item name="client_config" xsi:type="string">SR\Icount\Gateway\Request\ClientConfigBuilder</item>
+                <item name="client_headers" xsi:type="string">SR\Icount\Gateway\Request\ClientHeadersBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="SR\Icount\Gateway\Http\TransferFactory">
+        <arguments>
+            <argument name="config" xsi:type="object">SrIcountConfig</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="SrIcountClientFactory" type="SR\Gateway\Model\Http\Client\ClientFactory">
+        <arguments>
+            <argument name="config" xsi:type="object">SrIcountConfig</argument>
+            <argument name="clientArguments" xsi:type="array">
+                <item name="logger" xsi:type="object">SrIcountMainLogger</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="AbstractSrIcountHandlerChain" type="AbstractSrGatewayHandlerChain">
+        <arguments>
+            <argument name="config" xsi:type="object">SrIcountConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SrIcountErrorMessageMapper" type="SR\Gateway\Model\ErrorMapper\ErrorMessageMapper">
+        <arguments>
+            <argument name="messageMapping" xsi:type="object">SR\Icount\Gateway\ErrorMapper\ErrorMappingData</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="SR\Icount\Gateway\ErrorMapper\ErrorMappingData">
+        <arguments>
+            <argument name="mappings" xsi:type="array">
+                <item name="-999" xsi:type="string">General Error</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- end: Commands infrastructure -->
+
+
+<!-- start: BODY of specific COMMAND DEFINITION(s) -->
+    <!-- start: Command: CREATE INVOICE -->
+    <virtualType name="SrIcountCreateInvoiceCommand" type="AbstractSrIcountCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">SrIcountCreateInvoiceRequestBuilder</argument>
+            <argument name="validator" xsi:type="object">SR\Icount\Gateway\Validator\CreateDocInvoiceValidator</argument>
+            <argument name="handler" xsi:type="object">SrIcountCreateDocInvoiceHandlerChain</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SrIcountCreateInvoiceRequestBuilder" type="AbstractSrIcountRequestBuilder">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="request_action" xsi:type="string">SR\Icount\Gateway\Request\RequestAction\DocCreateActionBuilder</item>
+                <item name="doc_invoice_data" xsi:type="string">SR\Icount\Gateway\Request\CreateDocInvoiceDataBuilder</item>
+                <item name="doc_invoice_items_data" xsi:type="string">SR\Icount\Gateway\Request\DocInvoiceItemsDataBuilder</item>
+                <item name="doc_invoice_cc_data" xsi:type="string">SR\Icount\Gateway\Request\DocInvoiceCcDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SrIcountCreateDocInvoiceHandlerChain" type="AbstractSrIcountHandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="doc_invoice_hander" xsi:type="string">SR\Icount\Gateway\Response\CreateDocInvoiceHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- end: Command: CREATE INVOICE -->
+<!-- end: BODY of specific COMMAND DEFINITION(s) -->
+
+
+
+    <!-- start: Logger definitions -->
+    <!-- NOTE: MAIN Logger to use -->
+    <virtualType name="SrIcountMainLogger" type="SR\Gateway\Model\Logger">
+        <arguments>
+            <argument name="logger" xsi:type="object">SrIcountBaseLogger</argument>
+            <argument name="config" xsi:type="object">SrIcountConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SrIcountBaseLogger" type="SR\Gateway\Model\Logger\Logger">
+        <arguments>
+            <!-- @see \SR\Icount\Gateway\Config\Config::EXT_ALIAS -->
+            <argument name="name" xsi:type="string">sricount</argument><!-- NOTE: The logging channel -->
+            <argument name="handlers" xsi:type="array">
+                <item name="file" sortOrder="40" xsi:type="object">SrIcountLoggerFileHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SrIcountLoggerFileHandler" type="SR\Gateway\Model\Logger\Handler\FileHandler">
+        <arguments>
+            <argument name="config" xsi:type="object">SrIcountConfig</argument>
+            <argument name="fileName" xsi:type="string">var/log/sricount.log</argument>
+        </arguments>
+    </virtualType>
+    <!-- end: Logger definitions -->
+<!--
+/**
+ * ========== END: GATEWAY DEFINITIONS ans CONFIGURATION ==========
+ */
+-->
+</config>

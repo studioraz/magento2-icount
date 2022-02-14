@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-/**
- * Copyright © 2021 Studio Raz. All rights reserved.
- * See LICENSE.txt for license details.
- */
--->
+  ~ Copyright © 2022 Studio Raz. All rights reserved.
+  ~ See LICENCE file for license details.
+  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="SR_{ModuleName}::config" title="{ModuleName}" module="SR_{ModuleName}" translate="title" sortOrder="10000"
-             action="adminhtml/system_config/edit/section/sr_{ModuleName}" parent="SR_Base::srbase" resource="SR_{ModuleName}::config"/>
+        <add id="SR_Icount::sricount"
+             parent="SR_Base::srbase"
+             module="SR_Icount"
+             title="Icount"
+             sortOrder="500"
+             resource="SR_Icount::sricount"/>
+
+        <add id="SR_Icount::sricount_settings"
+             title="Settings"
+             sortOrder="1000"
+             module="SR_Icount"
+             parent="SR_Icount::sricount"
+             action="adminhtml/system_config/edit/section/sricount/"
+             resource="SR_Icount::sricount_settings"/>
     </menu>
 </config>

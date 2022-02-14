@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © 2022 Studio Raz. All rights reserved.
+  ~ See LICENCE file for license details.
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="sricount_create_doc_invoice" instance="SR\Icount\Cron\Doc\CreateInvoiceTask" method="execute">
+            <schedule>*/30 * * * *</schedule><!-- every 30 minutes. -->
+        </job>
+    </group>
+</config>

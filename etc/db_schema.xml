@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © 2022 Studio Raz. All rights reserved.
+  ~ See LICENCE file for license details.
+  -->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <!-- see: \SR\Icount\Model\ResourceModel\IcountDocResource::ENTITY_DB_TABLE -->
+    <!-- see: \SR\Icount\Api\Data\IcountDocInterface -->
+    <table name="studioraz_icount_doc" resource="default" engine="innodb" comment="Studioraz iCount Doc storage">
+        <column name="id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="Entity Id (autoincrement field)"/>
+        <column name="doc_type_id" xsi:type="smallint" unsigned="true" nullable="false" identity="false" default="0" comment="ID of icount doc type"/>
+        <column name="doc_num" xsi:type="int" identity="false" unsigned="true" nullable="false" default="0" comment="ID of document (given by iCount [remote])"/>
+        <column name="doc_linkage_id" xsi:type="int" identity="false" unsigned="true" nullable="true" default="null" comment="ID of document (given by Magento [local])"/>
+        <column name="doc_exported_at" xsi:type="datetime" on_update="false" nullable="true" comment="DateTime when Magento doc was Exported"/>
+
+        <column name="additional_information" xsi:type="text" nullable="true" comment="Additional Information (any extra data)"/>
+        <column name="updated_at" xsi:type="timestamp" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Date of Modification"/>
+        <column name="created_at" xsi:type="timestamp" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Date of Creation"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY_SRICOUNT_EE1566CF0D">
+            <column name="id"/>
+        </constraint>
+<!--        <constraint xsi:type="unique" referenceId="SRICOUNT_DOCTYPEID_DOCNUM_DOCLINKID">-->
+<!--            <column name="doc_type_id"/>-->
+<!--            <column name="doc_num"/>-->
+<!--            <column name="doc_linkage_id"/>-->
+<!--        </constraint>-->
+
+        <index referenceId="IDX_SRICOUNT_DOCTYPEID_DOCLINKID" indexType="btree">
+            <column name="doc_type_id"/>
+            <column name="doc_linkage_id"/>
+        </index>
+        <index referenceId="IDX_SRICOUNT_DOCEXPORTEDAT" indexType="btree">
+            <column name="doc_exported_at"/>
+        </index>
+    </table>
+</schema>

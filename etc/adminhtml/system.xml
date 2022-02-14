@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright © 2022 Studio Raz. All rights reserved.
+  ~ See LICENCE file for license details.
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!-- section-id=\SR\Icount\Gateway\Config\Config::EXT_ALIAS -->
+        <section id="sricount" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>iCount</label>
+            <tab>studioraz</tab>
+            <resource>SR_Icount::sricount_settings</resource>
+
+            <group id="general" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General</label>
+
+                <field id="active" translate="label" sortOrder="100" type="select" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="mode" type="select" translate="label" sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Current Mode</label>
+                    <source_model>SR\Gateway\Model\System\Config\Source\Mode</source_model>
+                </field>
+
+                <field id="api_username_production" type="text" translate="label comment" sortOrder="300" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Username</label>
+                    <comment><![CDATA[For <strong>Production</strong> mode]]></comment>
+                    <depends>
+                        <field id="mode">1</field>
+                    </depends>
+                </field>
+                <field id="api_username_sandbox" type="text" translate="label comment" sortOrder="310" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Username</label>
+                    <comment><![CDATA[For <strong>Sandbox</strong> mode]]></comment>
+                    <depends>
+                        <field id="mode">2</field>
+                    </depends>
+                </field>
+
+                <field id="api_password_production" type="text" translate="label comment" sortOrder="400" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Password</label>
+                    <comment><![CDATA[For <strong>Production</strong> mode]]></comment>
+                    <!--<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>-->
+                    <depends>
+                        <field id="mode">1</field>
+                    </depends>
+                </field>
+                <field id="api_password_sandbox" type="text" translate="label comment" sortOrder="410" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Password</label>
+                    <comment><![CDATA[For <strong>Sandbox</strong> mode]]></comment>
+                    <depends>
+                        <field id="mode">2</field>
+                    </depends>
+                </field>
+
+                <field id="api_endpoint_production" type="text" translate="label comment" sortOrder="500" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Endpoint</label>
+                    <comment><![CDATA[For <strong>Production</strong> mode]]></comment>
+                    <depends>
+                        <field id="mode">1</field>
+                    </depends>
+                </field>
+                <field id="api_endpoint_sandbox" type="text" translate="label comment" sortOrder="510" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Endpoint</label>
+                    <comment><![CDATA[For <strong>Sandbox</strong> mode]]></comment>
+                    <depends>
+                        <field id="mode">2</field>
+                    </depends>
+                </field>
+
+                <field id="api_cid_production" type="text" translate="label comment" sortOrder="550" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Company Identifier</label>
+                    <comment><![CDATA[For <strong>Production</strong> mode]]></comment>
+                    <depends>
+                        <field id="mode">1</field>
+                    </depends>
+                </field>
+                <field id="api_cid_sandbox" type="text" translate="label comment" sortOrder="560" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Company Identifier</label>
+                    <comment><![CDATA[For <strong>Sandbox</strong> mode]]></comment>
+                    <depends>
+                        <field id="mode">2</field>
+                    </depends>
+                </field>
+
+                <!-- NOTE: such field is hidden. see its "showInDefault" -->
+                <field id="http_client" translate="label comment" type="select" sortOrder="600" showInDefault="0" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Http Client</label>
+                    <source_model>SR\Gateway\Model\System\Config\Source\HttpClient</source_model>
+                    <comment><![CDATA[Client to interact with External service. (SOAP, REST etc)]]></comment>
+                </field>
+
+                <field id="debug" translate="label comment" type="select" sortOrder="1900" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Write debug data into log file. /var/log/sractivetrail.log]]></comment>
+                </field>
+            </group>
+
+            <group id="doc_invoice" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Invoice</label>
+
+                <field id="send_copy_to_me" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Send a copy of the Invoice to Me (account user)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="send_copy_to_additional" translate="label comment" type="select" sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Send a Copy to Additional Recipient</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="cron" translate="label" type="text" sortOrder="1000" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Cron (Scheduled Tasks)</label>
+
+                <field id="create_invoice" translate="label comment" sortOrder="100" type="select" showInWebsite="0" showInStore="0" showInDefault="1" canRestore="1">
+                    <label>Create Invoices</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Operation direction: Magento to iCount (doc/create).]]></comment>
+                </field>
+
+            </group>
+        </section>
+    </system>
+</config>

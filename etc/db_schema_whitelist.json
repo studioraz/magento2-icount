@@ -1,0 +1,21 @@
+{
+    "studioraz_icount_doc": {
+        "column": {
+            "id": true,
+            "doc_type_id": true,
+            "doc_num": true,
+            "doc_linkage_id": true,
+            "doc_exported_at": true,
+            "additional_information": true,
+            "updated_at": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY_SRICOUNT_EE1566CF0D": true
+        },
+        "index": {
+            "IDX_SRICOUNT_DOCTYPEID_DOCLINKID": true,
+            "IDX_SRICOUNT_DOCEXPORTEDAT": true
+        }
+    }
+}
