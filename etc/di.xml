@@ -115,7 +115,7 @@
             <argument name="transferFactory" xsi:type="object">SR\Icount\Gateway\Http\TransferFactory</argument>
             <argument name="clientFactory" xsi:type="object">SrIcountClientFactory</argument>
             <argument name="handler" xsi:type="object">AbstractSrIcountHandlerChain</argument>
-            <argument name="errorMessageMapper" xsi:type="object">SrActiveTrailErrorMessageMapper</argument>
+            <argument name="errorMessageMapper" xsi:type="object">SrIcountErrorMessageMapper</argument>
         </arguments>
     </virtualType>
 

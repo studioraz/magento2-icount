@@ -95,7 +95,7 @@
                 <field id="debug" translate="label comment" type="select" sortOrder="1900" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment><![CDATA[Write debug data into log file. /var/log/sractivetrail.log]]></comment>
+                    <comment><![CDATA[Write debug data into log file. /var/log/sricount.log]]></comment>
                 </field>
             </group>
 
