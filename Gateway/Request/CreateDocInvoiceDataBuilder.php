@@ -61,7 +61,7 @@ class CreateDocInvoiceDataBuilder extends AbstractDataBuilder
 
             //'currency' => $order->getOrderCurrencyCode(),// invoice-order-store-currency order.store_currency_code
             'currency' => 'ILS',// invoice-order-store-currency order.store_currency_code
-            'discount_incvat' => (float)$order->getDiscountAmount(),//float 19.90 {{order.discount_amount}} Order discount amount (including VAT)
+            'discount_incvat' => abs((float)$order->getDiscountAmount()),// NOTE: only positive value. float 19.90 {{order.discount_amount}} Order discount amount (including VAT)
             //'' => '',
         ];
     }

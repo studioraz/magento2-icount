@@ -62,7 +62,7 @@ class DocInvoiceItemsDataBuilder extends AbstractDataBuilder
                 'sku' => $item->getSku(),// Magento item sku {{item.sku}}
                 'description' => $item->getName(),// Magento item name {{item.name}}
                 'unitprice_incvat' => (float)$item->getPrice(),//Magento order item price (including VAT) {{item.price}}
-                'quantity' => $item->getQtyOrdered(),// Magento Order item quantity{{item.qty}}
+                'quantity' => (float)$item->getQtyOrdered(),// Magento Order item quantity{{item.qty}}
             ];
         }
 
