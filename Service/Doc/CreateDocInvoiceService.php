@@ -254,7 +254,30 @@ class CreateDocInvoiceService
             ->where(new \Zend_Db_Expr("{$tblIcountDocAlias}.doc_num = 0 OR {$tblIcountDocAlias}.doc_num IS NULL"))
             //->where('entity_id = ?', 86)// FIXME DBG
             ;
-        $select->limit(10);
+
+        // NOTE: Add filter by Order Id FROM/TO if it is applicable
+        $orderIdFrom = (int)$this->config->getValue(
+            Config::KEY_CONFIG_ORDER_FILTER_ID_MIN,
+            Config::GROUP_PATH_DOC_INVOICE
+        );
+        $orderIdTo = (int)$this->config->getValue(
+            Config::KEY_CONFIG_ORDER_FILTER_ID_MAX,
+            Config::GROUP_PATH_DOC_INVOICE
+        );
+
+        if ($orderIdFrom === $orderIdTo && $orderIdFrom > 0) {
+            $select->where('entity_id = ?', $orderIdFrom);
+        } else {
+            if ($orderIdFrom > 0) {
+                $select->where('entity_id >= ?', $orderIdFrom);
+            }
+
+            if ($orderIdTo > 0) {
+                $select->where('entity_id <= ?', $orderIdTo);
+            }
+
+            $select->limit(10);// NOTE: LIMIT of processing Bunch
+        }
 
         //$__sql = (string)$select;//DBG
 

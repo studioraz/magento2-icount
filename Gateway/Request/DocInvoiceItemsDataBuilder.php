@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace SR\Icount\Gateway\Request;
 
+use Magento\Catalog\Model\Product\Type as ProductType;
 use Magento\Framework\Phrase;
 use Magento\Sales\Api\Data\OrderInterface;
 use SR\Gateway\Api\CommandInterface;
@@ -58,12 +59,27 @@ class DocInvoiceItemsDataBuilder extends AbstractDataBuilder
 
         $lines = [];
         foreach ($order->getAllItems() as $item) {
-            $lines[] = [
+            // NOTE: skip Complex Product's items (configurable, bundle)
+            if ($item->getProductType() !== ProductType::TYPE_SIMPLE) {
+                continue;
+            }
+
+            // NOTE: set default values
+            //     sku and name from simple, the rest from parent
+            $line = [
                 'sku' => $item->getSku(),// Magento item sku {{item.sku}}
                 'description' => $item->getName(),// Magento item name {{item.name}}
                 'unitprice_incvat' => (float)$item->getPrice(),//Magento order item price (including VAT) {{item.price}}
                 'quantity' => (float)$item->getQtyOrdered(),// Magento Order item quantity{{item.qty}}
             ];
+
+            // NOTE: in case the Item is a child of Complex Product (configurable, bundle) re-define specific params
+            if (null !== $parentItem = $item->getParentItem()) {
+                $line['unitprice_incvat'] = (float)$parentItem->getPrice();
+                $line['quantity'] = (float)$parentItem->getQtyOrdered();
+            }
+
+            $lines[] = $line;
         }
 
         // NOTE: start: add extra item SHIPPING

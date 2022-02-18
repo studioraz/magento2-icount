@@ -18,6 +18,12 @@
                 <api_endpoint_sandbox>https://api.icount.co.il/api/v3.php/</api_endpoint_sandbox>
             </general>
 
+            <doc_invoice>
+                <filter_order_id_min/>
+                <filter_order_id_max/>
+            </doc_invoice>
+
+
             <cron>
                 <create_invoice>0</create_invoice>
             </cron>

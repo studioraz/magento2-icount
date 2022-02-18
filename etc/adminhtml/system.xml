@@ -111,6 +111,16 @@
                     <label>Send a Copy to Additional Recipient</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+
+                <field id="filter_order_id_min" type="text" translate="label comment" sortOrder="300" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Minimum Order Id to Sync</label>
+                    <comment>EntityId. Greater than or Equals to the entered value</comment>
+                </field>
+
+                <field id="filter_order_id_max" type="text" translate="label comment" sortOrder="410" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Maximum Order Id to Sync</label>
+                    <comment>EntityId. Lower than or Equals to the entered value</comment>
+                </field>
             </group>
 
             <group id="cron" translate="label" type="text" sortOrder="1000" showInDefault="1" showInWebsite="0" showInStore="0">
