@@ -25,6 +25,8 @@ class Config extends \SR\Gateway\Model\Config\Config
 
     public const KEY_CONFIG_SEND_COPY_TO_ME = 'send_copy_to_me';
     public const KEY_CONFIG_SEND_COPY_TO_ADDITIONAL = 'send_copy_to_additional';
+    public const KEY_CONFIG_ORDER_FILTER_ID_MAX = 'filter_order_id_max';
+    public const KEY_CONFIG_ORDER_FILTER_ID_MIN = 'filter_order_id_min';
 
     public const KEY_CONFIG_CREATE_INVOICE = 'create_invoice';
 
