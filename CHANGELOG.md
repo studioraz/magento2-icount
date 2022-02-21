@@ -6,10 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - YYYY-MM-DD
+## [1.0.0] - 2022-02-21
 ### Added
 - Project init
 
 
-[Unreleased]: https://github.com/studioraz/magento2-{module-name}/compare/1.0.0...HEAD
-[1.0.0]: https://github.com/studioraz/magento2-{module-name}/releases/tag/1.0.0
+[Unreleased]: https://github.com/studioraz/magento2-icount/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/studioraz/magento2-icount/releases/tag/1.0.0

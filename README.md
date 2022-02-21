@@ -1,18 +1,7 @@
-```
-Template Repository for Magento 2 repository module
-
-To create a new repository based on this repository choose it on the "Create a new repository" page's Repository template drop-down. 
-
-1. Replace template variables {ModuleName}, {title}, {description}, {version} {module-name} with real values.
-3. Update README content below
-4. Remove this whole section 
-```
-
-# Studio Raz Magento 2 for {title}
+# Studio Raz Magento 2 to interact with external service iCount
 
 ## Features
 1. ...
-2. ...
 
 ## Installation
 
@@ -28,11 +17,11 @@ To create a new repository based on this repository choose it on the "Create a n
 
 3. Install this module within Magento 2 using composer
     ```
-    composer require studioraz/{module-name}
+    composer require studioraz/magento2-icount
     ```
 
 4. After this, enable the module as usual
     ```
-    bin/magento mo:e SR_{ModuleName} &&
+    bin/magento mo:e SR_SR_Icount &&
     bin/magento s:up
     ```

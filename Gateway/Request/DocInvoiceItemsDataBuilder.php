@@ -83,14 +83,13 @@ class DocInvoiceItemsDataBuilder extends AbstractDataBuilder
         }
 
         // NOTE: start: add extra item SHIPPING
-        if ($order->getShippingAmount() > 0) {
-            $lines[] = [
-                'sku' => 'shipping',
-                'description' => $order->getShippingDescription(),
-                'unitprice_incvat' => (float)$order->getShippingAmount(),//Magento order item price (including VAT) {{item.price}}
-                'quantity' => 1,
-            ];
-        }
+        //     the Item should be built always, even if ShippingAmount is 0 (zero)
+        $lines[] = [
+            'sku' => 'shipping',
+            'description' => $order->getShippingDescription(),
+            'unitprice_incvat' => (float)$order->getShippingAmount(),//Magento order item price (including VAT) {{item.price}}
+            'quantity' => 1,
+        ];
         // end: add extra item SHIPPING
 
         return $lines;
