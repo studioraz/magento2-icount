@@ -28,12 +28,14 @@ abstract class AbstractValidator extends \SR\Gateway\Model\Validator\AbstractVal
     {
         $messages = [];
 
-        $reason =  $rawResponse['reason'] ?? null;// error reason
-        $details = $rawResponse['error_details'] ?? null;// error details (could be an Array)
-
-        $message = $rawResponse['error_description'] ?? null;// error message
-        if (!empty($message)) {
-            $messages[] = $message;
+        foreach (['reason','error_description','error_details'] as $key) {
+            if (isset($rawResponse[$key])) {
+                $message = $rawResponse[$key];
+                if (is_array($message)) {
+                    $message = implode('\n' , $message);
+                }
+                $messages[] = $key . ': ' . $message;
+            }
         }
 
         return $messages;
