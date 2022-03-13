@@ -32,7 +32,7 @@ abstract class AbstractValidator extends \SR\Gateway\Model\Validator\AbstractVal
             if (isset($rawResponse[$key])) {
                 $message = $rawResponse[$key];
                 if (is_array($message)) {
-                    $message = implode('\n' , $message);
+                    $message = implode(', ' , $message);
                 }
                 $messages[] = $key . ': ' . $message;
             }
