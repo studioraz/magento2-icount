@@ -41,7 +41,7 @@ class CreateDocInvoiceDataBuilder extends AbstractDataBuilder
             'doctype' => IcountDocType::TYPE_CODE_INVREC,// Document type [hard-coded constant]
             'doc_title' => $this->buildDocTitleValue($order),// message:: "Invoice for order #OrderIncID"
             'lang' => 'he',// 'he' | 'en'
-            'sanity_string' => $order->getIncrementId() . '-' . random_int(1000 , 9999),// OrderIncID
+            'sanity_string' => $order->getIncrementId(),// OrderIncID
             'hwc' => null,// additional comment
 
             'send_email' => (bool)$this->config->getValue(
