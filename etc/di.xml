@@ -28,6 +28,10 @@
 
 
 <!-- ========== start: Plugin definitions ========== -->
+    <!-- NOTE: to add custom columns to Sales Orders Grid -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <plugin name="sricount_order_grid_extra_columns" type="SR\Icount\Plugin\View\Element\UiComponent\DataProvider\ExtraColumnsPlugin" sortOrder="50" disabled="false" />
+    </type>
 <!-- ========== end: Plugin definitions ========== -->
 
 
