@@ -18,6 +18,7 @@ class ClientHeadersBuilder extends \SR\Gateway\Model\Request\ClientHeadersBuilde
         $userDefained = parent::fetchUserDefinedHeaders($buildSubject);
 
         $userDefained['Content-Type'] = 'application/json';
+        $userDefained['Accept-Encoding'] = '';
 
         return $userDefained;
     }
