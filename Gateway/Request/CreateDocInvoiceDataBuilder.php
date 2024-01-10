@@ -61,7 +61,7 @@ class CreateDocInvoiceDataBuilder extends AbstractDataBuilder
 
             //'currency' => $order->getOrderCurrencyCode(),// invoice-order-store-currency order.store_currency_code
             'currency' => 'ILS',// invoice-order-store-currency order.store_currency_code
-            'discount_incvat' => abs((float)$order->getDiscountAmount()),// NOTE: only positive value. float 19.90 {{order.discount_amount}} Order discount amount (including VAT)
+            'discount_incvat' => $this->getDiscount($order),// NOTE: only positive value. float 19.90 {{order.discount_amount}} Order discount amount (including VAT)
             //'' => '',
         ];
     }
@@ -91,5 +91,19 @@ class CreateDocInvoiceDataBuilder extends AbstractDataBuilder
     protected function buildClientAddressValue(OrderAddressInterface $address): string
     {
         return $address->getStreetLine(1) . ' ' . $address->getCity() . ' ' . $address->getTelephone();
+    }
+
+    /**
+     * @param $order
+     * @return float|int
+     */
+    protected function getDiscount($order)
+    {
+        $discount = 0;
+        if ($order->getDiscountAmount()) {
+            $discount = $order->getDiscountInvoiced();
+        }
+        // NOTE: only positive value. float 19.90 {{order.discount_amount}} Order discount amount (including VAT)
+        return abs((float)$discount);
     }
 }
