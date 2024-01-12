@@ -99,8 +99,8 @@ class CreateDocInvoiceDataBuilder extends AbstractDataBuilder
      */
     protected function getDiscount($order)
     {
-        $discount = 0;
-        if ($order->getDiscountAmount()) {
+        $discount = $order->getDiscountAmount();
+        if ($discount) {
             $discount = $order->getDiscountInvoiced();
         }
         // NOTE: only positive value. float 19.90 {{order.discount_amount}} Order discount amount (including VAT)
