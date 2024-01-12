@@ -60,7 +60,8 @@ class DocInvoiceItemsDataBuilder extends AbstractDataBuilder
         $lines = [];
         foreach ($order->getAllItems() as $item) {
             // NOTE: skip Complex Product's items (configurable, bundle)
-            if ($item->getProductType() !== ProductType::TYPE_SIMPLE) {
+            // used the string instead of constant like ProductType::TYPE_SIMPLE, to avoid errors of existig classes
+            if (!in_array($item->getProductType(), [ProductType::TYPE_SIMPLE, ProductType::TYPE_VIRTUAL, 'mageworx_giftcards', 'amgiftcard'])) {
                 continue;
             }
 
