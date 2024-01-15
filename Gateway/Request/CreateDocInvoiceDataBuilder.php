@@ -101,7 +101,10 @@ class CreateDocInvoiceDataBuilder extends AbstractDataBuilder
     {
         $discount = $order->getDiscountAmount();
         if ($discount) {
-            $discount = $order->getDiscountInvoiced();
+            $discount = abs($order->getDiscountInvoiced());
+        }
+        if ($order->getData('mageworx_giftcards_amount')) {
+            $discount += abs($order->getData('mageworx_giftcards_amount'));
         }
         // NOTE: only positive value. float 19.90 {{order.discount_amount}} Order discount amount (including VAT)
         return abs((float)$discount);
