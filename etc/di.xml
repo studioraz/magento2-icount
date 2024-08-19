@@ -219,7 +219,7 @@
             <!-- @see \SR\Icount\Gateway\Config\Config::EXT_ALIAS -->
             <argument name="name" xsi:type="string">sricount</argument><!-- NOTE: The logging channel -->
             <argument name="handlers" xsi:type="array">
-                <item name="file" sortOrder="40" xsi:type="object">SrIcountLoggerFileHandler</item>
+                <item name="file" xsi:type="object">SrIcountLoggerFileHandler</item>
             </argument>
         </arguments>
     </virtualType>
