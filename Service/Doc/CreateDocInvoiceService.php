@@ -281,7 +281,7 @@ class CreateDocInvoiceService
 
         //$__sql = (string)$select;//DBG
 
-        return $resource->getConnection()->fetchCol($select, 'entity_id');
+        return $resource->getConnection()->fetchCol($select);
     }
 
     /**
