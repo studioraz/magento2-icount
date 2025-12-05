@@ -242,7 +242,7 @@ class CreateDocInvoiceService
         ];
         $select->joinLeft(
             [$tblIcountDocAlias => IcountDocResource::ENTITY_DB_TABLE],
-            \Safe\sprintf("%s.%s = %d AND %s.%s = %s", ...$replacements),
+            sprintf("%s.%s = %d AND %s.%s = %s", ...$replacements),
             []
         );
         // NOTE: end: join icount_doc table
@@ -251,9 +251,7 @@ class CreateDocInvoiceService
         $select->where('state = ?', 'processing')
             ->where('grand_total - total_paid <= 0.0001')// NOTE: check totalPaid amount using given inaccuracy
             ->where('total_invoiced > 0')
-            ->where(new \Zend_Db_Expr("{$tblIcountDocAlias}.doc_num = 0 OR {$tblIcountDocAlias}.doc_num IS NULL"))
-            //->where('entity_id = ?', 86)// FIXME DBG
-            ;
+            ->where(new \Zend_Db_Expr("{$tblIcountDocAlias}.doc_num = 0 OR {$tblIcountDocAlias}.doc_num IS NULL"));
 
         // NOTE: Add filter by Order Id FROM/TO if it is applicable
         $orderIdFrom = (int)$this->config->getValue(
@@ -276,7 +274,7 @@ class CreateDocInvoiceService
                 $select->where('entity_id <= ?', $orderIdTo);
             }
 
-            $select->limit(10);// NOTE: LIMIT of processing Bunch
+            $select->limit(100);// NOTE: LIMIT of processing Bunch
         }
 
         //$__sql = (string)$select;//DBG
